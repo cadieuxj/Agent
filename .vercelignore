@@ -1,0 +1,35 @@
+# Vercel ignore file
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.env.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (too large for serverless)
+data/inventory/*.db
+data/pdfs/
+
+# Archived deployment files
+deployment/archive/
+
+# Development
+*.log
+.DS_Store
+Thumbs.db

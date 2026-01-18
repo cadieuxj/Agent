@@ -3,6 +3,7 @@ fastapi==0.109.0
 uvicorn[standard]==0.27.0
 websockets==12.0
 python-dotenv==1.0.1
+mangum==0.17.0  # ASGI adapter for Vercel/AWS Lambda
 
 # Azure Services
 azure-ai-formrecognizer==3.3.2
