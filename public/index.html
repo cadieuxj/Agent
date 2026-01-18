@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebec Voice Agent - Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .status.disconnected {
+            background: #fee;
+            color: #c33;
+        }
+
+        .status.connecting {
+            background: #ffc;
+            color: #993;
+        }
+
+        .status.connected {
+            background: #efe;
+            color: #3c3;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-connect {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-connect:hover:not(:disabled) {
+            background: #5568d3;
+        }
+
+        .btn-disconnect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-disconnect:hover:not(:disabled) {
+            background: #c82333;
+        }
+
+        .btn-talk {
+            background: #28a745;
+            color: white;
+            font-size: 18px;
+        }
+
+        .btn-talk:hover:not(:disabled) {
+            background: #218838;
+        }
+
+        .btn-talk.active {
+            background: #ffc107;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .settings {
+            margin-bottom: 20px;
+        }
+
+        .setting-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .transcript {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .transcript-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .transcript-message.user {
+            background: #e3f2fd;
+            margin-left: 20px;
+        }
+
+        .transcript-message.agent {
+            background: #f3e5f5;
+            margin-right: 20px;
+        }
+
+        .transcript-label {
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .vad-indicator {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .vad-meter {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .vad-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #ffc107, #dc3545);
+            width: 0%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇨🇦 Quebec Voice Agent</h1>
+        <p class="subtitle">Production-ready voice agent for commercial vehicle sales</p>
+
+        <div id="status" class="status disconnected">
+            ⚫ Disconnected
+        </div>
+
+        <div class="settings">
+            <div class="setting-group">
+                <label for="language">Language / Langue</label>
+                <select id="language">
+                    <option value="fr-CA">Français (Québec)</option>
+                    <option value="en-US">English (US)</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="agentType">Agent Type</label>
+                <select id="agentType">
+                    <option value="sales">Sales Agent</option>
+                    <option value="finance">Finance Manager</option>
+                    <option value="engineering">Engineering Expert</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="serverUrl">Server URL</label>
+                <input type="text" id="serverUrl" value="" placeholder="Leave empty for current host">
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="connectBtn" class="btn-connect">Connect</button>
+            <button id="disconnectBtn" class="btn-disconnect" disabled>Disconnect</button>
+        </div>
+
+        <button id="talkBtn" class="btn-talk" disabled>
+            🎤 Hold to Talk
+        </button>
+
+        <div class="vad-indicator">
+            <div>Voice Activity Detection</div>
+            <div class="vad-meter">
+                <div id="vadMeter" class="vad-meter-fill"></div>
+            </div>
+            <div id="vadStatus" style="margin-top: 10px; font-size: 12px; color: #666;">
+                Threshold: -45 dBFS
+            </div>
+        </div>
+
+        <div class="transcript" id="transcript">
+            <div style="color: #999; text-align: center;">Transcript will appear here...</div>
+        </div>
+    </div>
+
+    <script src="voice-client.js"></script>
+</body>
+</html>

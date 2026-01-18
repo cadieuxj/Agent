@@ -3,12 +3,18 @@
     {
       "src": "api/index.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/index.py"
-    }
+    { "src": "/voice-client.js", "dest": "/public/voice-client.js" },
+    { "src": "/api/(.*)", "dest": "/api/index.py" },
+    { "src": "/session/(.*)", "dest": "/api/index.py" },
+    { "src": "/health", "dest": "/api/index.py" },
+    { "src": "/test/(.*)", "dest": "/api/index.py" },
+    { "src": "^/$", "dest": "/public/index.html" }
   ]
 }
