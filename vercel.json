@@ -1,6 +1,4 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
   "builds": [
     {
       "src": "api/index.py",
@@ -9,29 +7,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
-    },
-    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
-  ],
-  "functions": {
-    "api/index.py": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
-  "env": {
-    "AZURE_OPENAI_ENDPOINT": "@azure_openai_endpoint",
-    "AZURE_OPENAI_API_KEY": "@azure_openai_api_key",
-    "AZURE_OPENAI_DEPLOYMENT_NAME": "@azure_openai_deployment_name",
-    "AZURE_OPENAI_API_VERSION": "@azure_openai_api_version",
-    "AZURE_AI_SEARCH_ENDPOINT": "@azure_ai_search_endpoint",
-    "AZURE_AI_SEARCH_KEY": "@azure_ai_search_key",
-    "DATABASE_URL": "@database_url",
-    "DEFAULT_LANGUAGE": "fr-CA",
-    "QUEBEC_COMPLIANCE_MODE": "true"
-  }
+  ]
 }
