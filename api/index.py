@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app - Vercel looks for 'app' variable
 app = FastAPI(
     title="Quebec Voice Agent API",
-    description="Production-ready voice agent for commercial vehicle sales in Quebec",
+    description="Production-ready voice agent for commercial vehicle sales in Quebec using GPT-4o Realtime (Mini)",
     version="1.0.0",
 )
 
@@ -103,33 +103,41 @@ async def health_check():
 @app.post("/session/create")
 async def create_session(request: SessionRequest):
     """Create session configuration for client-side Azure OpenAI connection."""
-    settings = get_settings()
-    router_agent = get_router_agent()
+    try:
+        settings = get_settings()
 
-    # Detect language
-    language = request.language or settings.default_language
-    if request.geolocation:
-        if request.geolocation.upper() in ["QUEBEC", "QC", "QUÉBEC"]:
-            language = "fr-CA"
+        # Detect language
+        language = request.language or settings.default_language
+        if request.geolocation:
+            if request.geolocation.upper() in ["QUEBEC", "QC", "QUÉBEC"]:
+                language = "fr-CA"
 
-    # Generate session ID
-    session_id = str(uuid.uuid4())
+        # Generate session ID
+        session_id = str(uuid.uuid4())
 
-    # Get system prompt for the agent type
-    system_prompt = router_agent.get_system_prompt(language, request.agent_type)
+        # Simple system prompts (avoiding RouterAgent for now to reduce dependencies)
+        system_prompts = {
+            "sales": f"You are a helpful sales agent for commercial vehicles. Respond in {language}.",
+            "finance": f"You are a finance manager specializing in commercial vehicle leasing. Respond in {language}.",
+            "engineering": f"You are an engineering expert for commercial vehicles. Respond in {language}.",
+        }
+        system_prompt = system_prompts.get(request.agent_type, system_prompts["sales"])
 
-    return {
-        "session_id": session_id,
-        "status": "configured",
-        "language": language,
-        "agent_type": request.agent_type,
-        "system_prompt": system_prompt,
-        "azure_config": {
-            "endpoint": settings.azure_openai_endpoint,
-            "deployment": settings.azure_openai_deployment_name,
-            "api_version": settings.azure_openai_api_version,
-        },
-    }
+        return {
+            "session_id": session_id,
+            "status": "configured",
+            "language": language,
+            "agent_type": request.agent_type,
+            "system_prompt": system_prompt,
+            "azure_config": {
+                "endpoint": settings.azure_openai_endpoint,
+                "deployment": settings.azure_openai_deployment_name,
+                "api_version": settings.azure_openai_api_version,
+            },
+        }
+    except Exception as e:
+        logger.error(f"Error creating session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to create session: {str(e)}")
 
 
 @app.post("/api/detect-language")

@@ -1,6 +1,6 @@
 # Quebec Voice Agent 🇨🇦
 
-Production-ready, low-latency voice agent for commercial vehicle sales in Quebec using the Azure OpenAI GPT-4o Realtime API and Microsoft Agent Framework.
+Production-ready, low-latency voice agent for commercial vehicle sales in Quebec using the Azure OpenAI GPT-4o Realtime API (Mini) and Microsoft Agent Framework.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ Production-ready, low-latency voice agent for commercial vehicle sales in Quebec
 
 The Quebec Voice Agent is an AI-powered voice assistant specialized in commercial vehicle sales for the Quebec market. It features:
 
-- **Real-time voice interaction** using Azure OpenAI GPT-4o Realtime API
+- **Real-time voice interaction** using Azure OpenAI GPT-4o Realtime API (Mini)
 - **Multi-agent architecture** with specialized agents for sales, finance, and engineering
 - **Quebec French compliance** with Bill 96 (Charter of the French Language)
 - **Intelligent routing** with automatic language detection (FR-CA vs EN-US)
@@ -51,7 +51,7 @@ The Quebec Voice Agent is an AI-powered voice assistant specialized in commercia
              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │               Azure OpenAI Realtime API                     │
-│              (GPT-4o Realtime Model)                        │
+│          (GPT-4o Realtime Mini - 2024-12-17)                │
 └────────────┬────────────────────────────────────────────────┘
              │
              ▼

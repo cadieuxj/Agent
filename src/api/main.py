@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(
     title="Quebec Voice Agent API",
-    description="Production-ready voice agent for commercial vehicle sales in Quebec",
+    description="Production-ready voice agent for commercial vehicle sales in Quebec using GPT-4o Realtime (Mini)",
     version="1.0.0",
 )
 

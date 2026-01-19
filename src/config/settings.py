@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     # Azure OpenAI Configuration
     azure_openai_endpoint: str
     azure_openai_api_key: str
-    azure_openai_deployment_name: str = "gpt-4o-realtime"
-    azure_openai_api_version: str = "2024-10-01-preview"
+    azure_openai_deployment_name: str = "gpt-realtime-mini"
+    azure_openai_api_version: str = "2024-12-17"
 
     # Azure AI Services
     azure_ai_search_endpoint: Optional[str] = None

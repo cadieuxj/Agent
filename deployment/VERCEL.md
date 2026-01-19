@@ -35,8 +35,8 @@ In Vercel Dashboard or via CLI, set these secrets:
 ```bash
 vercel secrets add azure_openai_endpoint "https://your-resource.openai.azure.com/"
 vercel secrets add azure_openai_api_key "your-api-key"
-vercel secrets add azure_openai_deployment_name "gpt-4o-realtime"
-vercel secrets add azure_openai_api_version "2024-10-01-preview"
+vercel secrets add azure_openai_deployment_name "gpt-realtime-mini"
+vercel secrets add azure_openai_api_version "2024-12-17"
 vercel secrets add azure_ai_search_endpoint "https://your-search.search.windows.net"
 vercel secrets add azure_ai_search_key "your-search-key"
 vercel secrets add database_url "your-cloud-database-url"
